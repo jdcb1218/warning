@@ -1,0 +1,16 @@
+name = Warning Salesforce
+description = Warning Salesforce ("Reports").
+dependencies[] = entity
+dependencies[] = entityform
+dependencies[] = rules
+dependencies[] = paragraphs
+dependencies[] = pcolombia_cron_salesforce
+dependencies[] = email
+package = Ariadna
+core = 7.x
+; Information added by Drupal.org packaging script on 2015-09-15
+version = "7.x-1.x-dev"
+configure = admin/config/warning/list
+core = "7.x"
+project = "Warning Salesforce"
+datestamp = "1442333647"

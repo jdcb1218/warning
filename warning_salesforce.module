@@ -1,0 +1,91 @@
+<?php
+include_once 'forms/warning_salesforce.forms.inc';
+include_once 'includes/api.inc';
+
+
+/**
+ * Implements hook_help().
+ */
+
+function warning_salesforce_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#warning_salesforce':
+      return '<p>' . t('Configuracion modulo warning_salesforce', array('storage' => 'Configuracion modulo directorio' )) . '</p>';
+  }
+}
+
+/**
+ * Implements hook_permission().
+ */
+
+function warning_salesforce_permission() {
+  return array(
+    'administer warning_salesforce' =>  array(
+      'title' => t('Administer warning_salesforce'),
+      'description' => t('Perform administration warning_salesforce'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+
+function warning_salesforce_menu() {
+  $items = array();
+
+  $items['admin/config/warning/list'] = array(
+    'title' => t('Send Mail'),
+    'page callback' => 'warning_salesforce_list',
+    'access callback' => TRUE,
+  );
+
+  $items['admin/config/warning/records'] = array(
+    'title' => t('List Full Records'),
+    'page callback' => 'warning_salesforce_list_records',
+    'access callback' => TRUE,
+  );
+
+  $items['admin/config/sendmail'] = array(
+    'title' => t('Send Mail'),
+    'page callback' => 'sendmail_page',
+    'access callback' => TRUE,
+  );
+  $items['admin/config/warning_salesforce'] = array(
+    'title' => t('Configuration Id entityform'),
+    'description' => t('Config Id Entity'),
+    'page callback' => 'drupal_get_form', 
+    'page arguments' => array('warning_salesforce_config_entity'), 
+    'access callback' => TRUE
+  );
+  $items['admin/config/system/warning_salesforce'] = array(
+    'title' => t('Render Configuration Entityform'),
+    'description' => t('Config module warning_salesforce'),
+    'position' => 'left',
+    'weight' => -15,    
+    'page callback' => 'warning_salesforce_config',
+    'access callback' => TRUE,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_cron().
+ */
+function warning_salesforce_cron() {
+  return sendmail_page();
+}
+
+/**
+ * Implements hook_mail().
+ */
+
+function warning_salesforce_mail($key, &$message, $output) {
+  switch ($key) {
+    case 'send_mail':
+      $message['subject']= variable_get('subject' , t('Send data Report Failed Salesforce'));
+      $message['body'][]= $output;
+      $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed';
+    break;
+ }
+}

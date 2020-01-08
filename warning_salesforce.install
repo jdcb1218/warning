@@ -1,0 +1,104 @@
+<?php
+
+/**
+ * @file
+ * This is the file description for form custom ('PROCOLOMBIA').
+ *
+ * In this more verbose, multi-line description, you can specify what this
+ * file does exactly.
+ *
+ * @author Juan David Ceballos 
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+
+function warning_salesforce_uninstall() {
+  db_drop_table('warning_salesforce_reports');
+  return drupal_set_message(t('Uninstall Module @warning_salesforce'), 'status', TRUE);
+}
+
+/**
+ * Implements hook_schema().
+ */
+
+function warning_salesforce_schema() {
+  $schema['warning_salesforce_reports'] = array(
+    'description' => 'This is a table for competition players',
+    'fields' => array(
+      'id' => array(
+        'description' => 'The row identifier.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        ),
+  	  'uid' => array(
+        'description' => 'Uid',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'user_email' =>  array(
+        'type' => 'text', 
+        'size' => 'normal',
+        'not null' => FALSE, 
+        'description' => t('stores fieldname for tablename table.'),
+      ),
+      'name_user' => array(
+        'description' => 'The {name_user}',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'nit_company' => array(
+        'description' => 'The {nit_company}',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+      ),      
+      'name_company' => array(
+        'description' => 'The {name_company}',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'type_error' =>  array(
+        'type' => 'text', 
+        'size' => 'normal',
+        'not null' => FALSE, 
+        'description' => t('The {type_error}'),
+      ),
+      'log_php' => array(
+        'description' => 'The {log_php}',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'log_web_service' => array(
+        'description' => 'The {log_web_service}',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'day_created' => array(
+          'type' => 'datetime',
+          'mysql_type' => 'datetime',
+      ),
+      'created' => array(
+        'description' => 'The Unix timestamp created Duplas',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+    ),             
+	),
+    'primary key' => array('id'),
+  );
+  return $schema;
+}
